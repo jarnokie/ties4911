@@ -5,6 +5,6 @@ def make_nlu(api_key, url="https://gateway-lon.watsonplatform.net/natural-langua
     return NaturalLanguageUnderstandingV1(version="2018-11-16", iam_apikey=api_key, url=url)
 
 def analyze(nlu, url):
-    return nlu.analyze(url=url, features=Features(entities=EntitiesOptions(), keywords=KeywordsOptions())).get_result()
+    return nlu.analyze(url=url, features=Features(keywords=KeywordsOptions())).get_result()
 
 
