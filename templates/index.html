@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <header>
+     <meta charset="UTF-8"> 
+  </header>
+  <body>
+    <form action="/" method="POST">
+      <p>URL: <input type="url" name="url"></input>
+      <input type="submit"></input></p>
+    </form>
+    {% if content %}
+    <p>Request contents:</p>
+    <div>
+      {% for val in content %}
+      <p>{{ val }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </body>
+</html>
+
