@@ -8,6 +8,7 @@ name = "pypi"
 [packages]
 flask = "*"
 watson-developer-cloud = "*"
+configparser = "*"
 
 [requires]
 python_version = "3"
