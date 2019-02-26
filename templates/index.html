@@ -14,6 +14,7 @@ $(function () {
   <body>
     <div class="container" style="margin-top: 30px;">
       <form action="/" method="POST">
+        <h3>Insert url to analyze</h3>
         <p>URL: <input type="url" name="url"></input>
         <input class="btn btn-primary" type="submit" value="Analyze"></input></p>
       </form>
@@ -22,6 +23,7 @@ $(function () {
         <h3>URL</h3>
         <a href="{{ url }}">{{ url }}</a>
         <h3>Watson keywords</h3>
+        <p><i>Relevance value in tooltip</i></p>
         {% for key in watson_keywords %}
         <p class="btn btn-secondary" data-toggle="tooltip" title="{{ key[1] }}">{{ key[0] }}</p>
         {% endfor %}
