@@ -11,6 +11,9 @@ flask = "*"
 watson-developer-cloud = "*"
 google-cloud-language = "*"
 configparser = "*"
+requests = "*"
+grpcio = "*"
+"bs4" = "*"
 
 [requires]
 python_version = "3"

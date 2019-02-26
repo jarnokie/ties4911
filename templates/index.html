@@ -40,6 +40,15 @@ $(function () {
         {% endfor %}
       </div>
       {% endif %}
+      {% if azure_keywords %}
+      <div>
+        <h3>Azure keywords</h3>
+        <p><i>Index in tooltip</i></p>
+        {% for key in azure_keywords %}
+        <p class="btn btn-secondary" data-toggle="tooltip" title="{{ key[1] }}">{{ key[0] }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
     </div>
   </body>
 </html>
