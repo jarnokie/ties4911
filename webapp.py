@@ -2,13 +2,15 @@ from flask import Flask, render_template, request
 import json
 import watson_requests
 import google_requests
+import configparser
 
 app = Flask(__name__)
 
-with open("apikey.txt", "r") as f:
-    api_key = f.read().strip()
-nlu = watson_requests.make_nlu(api_key)
-#url = "https://www.nytimes.com/2019/02/25/movies/oscars-moments-best-worst.html"
+config = configparser.ConfigParser()
+config.read('apikey.txt')
+watson_api_key = config.get('APIKEYS', 'WATSON')
+
+nlu = watson_requests.make_nlu(watson_api_key)
 
 google_client = google_requests.create_client()
 
@@ -49,5 +51,4 @@ def main_post():
     
     # render page
     return render_template("index.html", watson_keywords=s, google_keywords=g, url=url)
-
 
