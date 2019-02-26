@@ -18,13 +18,24 @@ $(function () {
         <p>URL: <input type="url" name="url"></input>
         <input class="btn btn-primary" type="submit" value="Analyze"></input></p>
       </form>
+      {% if url %}
+      <h3>URL</h3>
+      <a href="{{ url }}">{{ url }}</a>
+      {% endif %}
       {% if watson_keywords %}
       <div>
-        <h3>URL</h3>
-        <a href="{{ url }}">{{ url }}</a>
         <h3>Watson keywords</h3>
         <p><i>Relevance value in tooltip</i></p>
         {% for key in watson_keywords %}
+        <p class="btn btn-secondary" data-toggle="tooltip" title="{{ key[1] }}">{{ key[0] }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if google_keywords %}
+      <div>
+        <h3>Google keywords</h3>
+        <p><i>Salience value in tooltip</i></p>
+        {% for key in google_keywords %}
         <p class="btn btn-secondary" data-toggle="tooltip" title="{{ key[1] }}">{{ key[0] }}</p>
         {% endfor %}
       </div>
