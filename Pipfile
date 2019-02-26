@@ -4,10 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
+ipython = "*"
 
 [packages]
 flask = "*"
 watson-developer-cloud = "*"
+google-cloud-language = "*"
 
 [requires]
 python_version = "3"
