@@ -5,6 +5,7 @@ import watson_requests
 import google_requests
 import configparser
 import azure_requests
+import wikipedia
 
 app = Flask(__name__)
 
@@ -17,6 +18,20 @@ nlu = watson_requests.make_nlu(watson_api_key)
 
 google_client = google_requests.create_client()
 
+MAX_WORDS = 20
+
+def get_wiki_url(word):
+    result = wikipedia.search(word, results=1)
+    if result:
+        try:
+            page = wikipedia.page(result[0])
+            return page.url
+        except wikipedia.exceptions.PageError:
+            pass
+        except wikipedia.exceptions.DisambiguationError:
+            pass
+    return ""
+
 def get_keywords_watson(json):
     """
     Return list of (keywords, relevance from watson json result
@@ -24,22 +39,22 @@ def get_keywords_watson(json):
     keywords = []
     for key in json.keys():
         if key == "keywords":
-            for keyword in json[key]:
-                keywords.append((keyword["text"], keyword["relevance"]))
+            for keyword in json[key][0:MAX_WORDS]:
+                keywords.append((keyword["text"], keyword["relevance"], get_wiki_url(keyword["text"])))
     return keywords
 
 def get_keywords_google(entities):
     keywords = []
-    for i in range(min(50,len(entities))):
+    for i in range(min(MAX_WORDS, len(entities))):
         e = entities[i]
-        keywords.append((e.name, e.salience))
+        keywords.append((e.name, e.salience, get_wiki_url(e.name)))
     return keywords
 
 def get_keywords_azure(json):
     keywords = []
     if "documents" in json and len(json["documents"]) > 0 and "keyPhrases" in json["documents"][0]:
         keywords = json["documents"][0]["keyPhrases"]
-    return [[k, i] for i, k in enumerate(keywords)]
+    return [[k, i, get_wiki_url(k)] for i, k in enumerate(keywords[0:MAX_WORDS])]
 
 @app.route("/", methods=["GET"])
 def main_page():
