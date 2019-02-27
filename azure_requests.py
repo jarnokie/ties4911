@@ -4,19 +4,19 @@ import requests
 # Strips tags from HTML, returning regular text.
 def strip_tags(html):
     soup = BeautifulSoup(html, features="html.parser")
-    text = soup.get_text()
+    # Select only p-tags
+    text = " ".join([p.text for p in soup.select('p')])
     return text
 
 def read_url(url):
     response = requests.get(url)
     return strip_tags(response.content)
 
-
 def analyze(url, api_key):
     content = read_url(url)
     # Maximum length of document is 5000 characters
     # https://docs.microsoft.com/bs-latn-ba/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-keyword-extraction
-    content = str(content.replace("\n", "").encode("utf-8"))[0:5000]
+    content = content[0:5000]
     headers = {
         # Request headers
         'Ocp-Apim-Subscription-Key': api_key
