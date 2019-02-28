@@ -20,7 +20,9 @@ google_client = google_requests.create_client()
 
 MAX_WORDS = 20
 
-def get_wiki_url(word):
+@app.route("/wiki")
+def get_wiki_url():
+    word = request.args.get('word')
     result = wikipedia.search(word, results=1)
     if result:
         try:
@@ -40,21 +42,21 @@ def get_keywords_watson(json):
     for key in json.keys():
         if key == "keywords":
             for keyword in json[key][0:MAX_WORDS]:
-                keywords.append((keyword["text"], keyword["relevance"], get_wiki_url(keyword["text"])))
+                keywords.append((keyword["text"], keyword["relevance"]))
     return keywords
 
 def get_keywords_google(entities):
     keywords = []
     for i in range(min(MAX_WORDS, len(entities))):
         e = entities[i]
-        keywords.append((e.name, e.salience, get_wiki_url(e.name)))
+        keywords.append((e.name, e.salience))
     return keywords
 
 def get_keywords_azure(json):
     keywords = []
     if "documents" in json and len(json["documents"]) > 0 and "keyPhrases" in json["documents"][0]:
         keywords = json["documents"][0]["keyPhrases"]
-    return [[k, i, get_wiki_url(k)] for i, k in enumerate(keywords[0:MAX_WORDS])]
+    return [[k, i] for i, k in enumerate(keywords[0:MAX_WORDS])]
 
 @app.route("/", methods=["GET"])
 def main_page():
